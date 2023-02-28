@@ -18,17 +18,15 @@ class _HomeScreen2State extends State<HomeScreen2> {
   final String lorem_ipsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-  List<ArticelModel2> article_list2 = [];
+  static List<ArticelModel2> article_list2 = [];
 
   @override
   void initState() {
+    super.initState();
     print(
         "this is the article list length at primary initialization ${article_list2.length}");
-    super.initState();
-    // setState(() {
-    //   article_list2.add(getNews());
-    // });
-    article_list2 = getNews();
+
+    getNews();
     print(
         "this is the article list 2 fetched for the main progeam: $article_list2");
   }
@@ -43,7 +41,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
         title: Text("NewsApp 2"),
         centerTitle: true,
       ),
-      body: _loaded
+      body: !_loaded
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
@@ -67,15 +65,18 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                       color: Colors.black,
                                       borderRadius: BorderRadius.circular(10),
                                       image: DecorationImage(
+                                          fit: BoxFit.cover,
                                           image: NetworkImage(
-                                              "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png"))),
+                                            // "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png",
+                                            article_list2[index].urlToImage,
+                                          ))),
                                   height: 220,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: Text(
-                                    lorem_ipsum,
+                                    article_list2[index].title,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -87,24 +88,24 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: Text(
-                                    lorem_ipsum,
+                                    article_list2[index].description,
                                     maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  child: Text(
-                                    article_list2[index].title,
-                                    // "Show this",
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
+                                // SizedBox(height: 10),
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //       horizontal: 10, vertical: 5),
+                                //   child: Text(
+
+                                //     // "Show this",
+                                //     maxLines: 3,
+                                //     overflow: TextOverflow.ellipsis,
+                                //     style: TextStyle(fontSize: 12),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ))
@@ -115,16 +116,20 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   getNews() async {
-    List<ArticelModel2> article_list2 = await BaseClientNews().getArticles();
+    article_list2 = await BaseClientNews().getArticles();
 
     print("this is the article length ${article_list2.length}");
     print(article_list2.runtimeType);
-    return article_list2;
-    // print(article_list2[0].title);
-    // print(article_list2[1].title);
-    // print(article_list2[1].title);
-    // print(article_list2[3].title);
-    // print(article_list2[4].title);
+    print(article_list2);
+    print(article_list2[0].title);
+    print(article_list2[1].title);
+    print(article_list2[1].title);
+    print(article_list2[3].title);
+    print(article_list2[4].title);
+    setState(() {
+      _loaded = true;
+    });
+    // return article_list2;
     // print(article_list2[5].title);
     // print(article_list2[6].title);
     // print(article_list2[7].title);
